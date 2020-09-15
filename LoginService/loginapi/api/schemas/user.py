@@ -1,5 +1,5 @@
-from login.models import User
-from login.extensions import ma, db
+from loginapi.models import User
+from loginapi.extensions import ma, db
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):

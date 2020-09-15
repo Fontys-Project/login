@@ -1,5 +1,5 @@
 import factory
-from login.models import User
+from loginapi.models import User
 
 
 class UserFactory(factory.Factory):

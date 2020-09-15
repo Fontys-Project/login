@@ -8,9 +8,9 @@ from flask_jwt_extended import (
     get_raw_jwt,
 )
 
-from login.models import User
-from login.extensions import pwd_context, jwt, apispec
-from login.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
+from loginapi.models import User
+from loginapi.extensions import pwd_context, jwt, apispec
+from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
 
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")

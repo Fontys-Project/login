@@ -1,14 +1,14 @@
 from flask import Flask
 
-from login import auth, api
-from login.extensions import db, jwt, migrate, apispec, celery
+from loginapi import auth, api
+from loginapi.extensions import db, jwt, migrate, apispec, celery
 
 
 def create_app(testing=False, cli=False):
     """Application factory, used to create application
     """
-    app = Flask("login")
-    app.config.from_object("login.config")
+    app = Flask("loginapi")
+    app.config.from_object("loginapi.config")
 
     if testing is True:
         app.config["TESTING"] = True

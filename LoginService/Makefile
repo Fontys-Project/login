@@ -1,8 +1,8 @@
 .PHONY: init init-migration build run db-migrate test tox
 
 init:  build run
-	docker-compose exec web login db upgrade
-	docker-compose exec web login init
+	docker-compose exec web loginapi db upgrade
+	docker-compose exec web loginapi init
 	@echo "Init done, containers running"
 
 build:
@@ -12,10 +12,10 @@ run:
 	docker-compose up -d
 
 db-migrate:
-	docker-compose exec web login db migrate
+	docker-compose exec web loginapi db migrate
 
 db-upgrade:
-	docker-compose exec web login db upgrade
+	docker-compose exec web loginapi db upgrade
 
 test:
 	docker-compose stop celery # stop celery to avoid conflicts with celery tests

@@ -1,7 +1,7 @@
 import pytest
 
-from login.app import init_celery
-from login.tasks.example import dummy_task
+from loginapi.app import init_celery
+from loginapi.tasks.example import dummy_task
 
 
 @pytest.fixture(scope="session")

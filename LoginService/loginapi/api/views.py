@@ -1,9 +1,9 @@
 from flask import Blueprint, current_app, jsonify
 from flask_restful import Api
 from marshmallow import ValidationError
-from login.extensions import apispec
-from login.api.resources import UserResource, UserList
-from login.api.schemas import UserSchema
+from loginapi.extensions import apispec
+from loginapi.api.resources import UserResource, UserList
+from loginapi.api.schemas import UserSchema
 
 
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1")

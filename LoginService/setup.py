@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 __version__ = "0.1"
 
 setup(
-    name="login",
+    name="loginapi",
     version=__version__,
     packages=find_packages(exclude=["tests"]),
     install_requires=[
@@ -21,7 +21,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "login = login.manage:cli"
+            "loginapi = loginapi.manage:cli"
         ]
     },
 )

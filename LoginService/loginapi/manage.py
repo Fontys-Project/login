@@ -1,14 +1,14 @@
 import click
 from flask.cli import FlaskGroup
 
-from login.app import create_app
+from loginapi.app import create_app
 
 
-def create_login(info):
+def create_loginapi(info):
     return create_app(cli=True)
 
 
-@click.group(cls=FlaskGroup, create_app=create_login)
+@click.group(cls=FlaskGroup, create_app=create_loginapi)
 def cli():
     """Main entry point"""
 
@@ -17,11 +17,11 @@ def cli():
 def init():
     """Create a new admin user
     """
-    from login.extensions import db
-    from login.models import User
+    from loginapi.extensions import db
+    from loginapi.models import User
 
     click.echo("create user")
-    user = User(username="admin", email="m.devrees@gmail.com", password="Password123", active=True)
+    user = User(username="admin", email="admin@mail.com", password="admin", active=True)
     db.session.add(user)
     db.session.commit()
     click.echo("created user admin")

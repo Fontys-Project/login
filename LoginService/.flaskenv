@@ -1,6 +1,6 @@
 FLASK_ENV=development
-FLASK_APP=login.app:create_app
+FLASK_APP=loginapi.app:create_app
 SECRET_KEY=changeme
-DATABASE_URI=sqlite:////tmp/login.db
+DATABASE_URI=sqlite:////tmp/loginapi.db
 CELERY_BROKER_URL=amqp://guest:guest@localhost/
 CELERY_RESULT_BACKEND_URL=amqp://guest:guest@localhost/

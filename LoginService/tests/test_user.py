@@ -1,5 +1,5 @@
 from flask import url_for
-from login.models import User
+from loginapi.models import User
 
 
 def test_get_user(client, db, user, admin_headers):

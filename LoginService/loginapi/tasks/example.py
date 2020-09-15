@@ -1,4 +1,4 @@
-from login.extensions import celery
+from loginapi.extensions import celery
 
 
 @celery.task

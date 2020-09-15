@@ -15,7 +15,7 @@ COPY requirements.txt setup.py tox.ini ./
 RUN pip install -r requirements.txt
 RUN pip install -e .
 
-COPY login login/
+COPY loginapi loginapi/
 COPY migrations migrations/
 
 EXPOSE 5000
