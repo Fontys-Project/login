@@ -4,6 +4,7 @@ Login Service is part of Warehouse Management System (WMS+) which utilizes authe
 
 ## Installation
 
+The service is based on a [cookiecutter](https://github.com/karec/cookiecutter-flask-restful#installation) instance of Flask-restful.
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the login service requirements.
 
