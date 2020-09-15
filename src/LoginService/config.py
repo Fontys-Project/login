@@ -1,4 +1,6 @@
 import os
+import multiprocessing as mp
+from flask_env import MetaFlaskEnv
 
 
 class Config(metaclass=MetaFlaskEnv):
@@ -11,6 +13,13 @@ class Config(metaclass=MetaFlaskEnv):
     # Logging
     LOG_FOLDER = "logs"
     FILE_LOGGING = True
+
+    # Flask-Login: http://flask.pocoo.org/docs/quickstart/#sessions
+    SECRET_KEY = os.environ.get(
+        'FLASK_SECRET_KEY',
+        'C6jP6YrXaDq8nchVyCF4DEuzwUSrPrRFAnAHH8A9Gutmy5vnTWyXdHWts4TnqeE3' * mp.cpu_count()
+    )
+
     try:
         if not os.path.exists(LOG_FOLDER) or not os.access(LOG_FOLDER, os.W_OK):
             os.mkdir(LOG_FOLDER)
@@ -24,3 +33,21 @@ class Config(metaclass=MetaFlaskEnv):
 
     # Backend
     API_URL = None
+
+
+class ProdConfig(Config):
+    """Production config"""
+    #  Flask
+    SECRET_KEY = os.environ.get('FLASK_SECRET_KEY')
+
+
+class TestConfig(Config):
+    """Test configuration"""
+    ENV = 'test'
+    API_URL = 'http://localhost:5000/api/v2.0/'
+
+
+class DevConfig(Config):
+    """Development configuration"""
+    ENV = 'dev'
+    API_URL = 'http://localhost:5000/api/v2.0/'
