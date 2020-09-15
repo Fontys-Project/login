@@ -1,5 +1,0 @@
-# Everything the developer needs in addition to the production requirements
--r test.txt
-
-# Debug toolbar
-Flask-DebugToolbar
