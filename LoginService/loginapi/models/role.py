@@ -2,7 +2,7 @@ from loginapi.extensions import db
 
 
 class Role(db.Model):
-    """Basic user model
+    """Basic role model
     """
 
     id = db.Column(db.Integer, primary_key=True)

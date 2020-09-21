@@ -8,6 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean, default=True)
+    role = db.relationship("Role")
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
