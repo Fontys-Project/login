@@ -6,6 +6,7 @@ class User(db.Model):
     """
 
     email = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean, default=True)
     role = db.relationship("Role")
