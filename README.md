@@ -34,3 +34,7 @@ loginapi run
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+
+## known issues
+If you encounter `OSError: mysql_config not found` while installing requirements, please run `sudo apt install libmysqlclient-dev`
