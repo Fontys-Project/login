@@ -13,3 +13,4 @@ apispec-webframeworks
 tox
 celery[redis]
 gunicorn
+flask-mysqldb

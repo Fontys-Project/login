@@ -35,8 +35,9 @@ services:
       - CELERY_RESULT_BACKEND_URL=redis://redis
   mysql:
     image: mysql:5.7
+    network_mode: host
     environment:
       - MYSQL_ROOT_PASSWORD=root
-    network: host
     volumes:
-    - ./mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
+      - ./mysql/setup.sql:/docker-entrypoint-initdb.d/setup.sql
