@@ -5,11 +5,11 @@ class User(db.Model):
     """Basic user model
     """
 
-    email = db.Column(db.String(80), unique=True, nullable=False, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean, default=True)
-    role = db.relationship("Role")
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
