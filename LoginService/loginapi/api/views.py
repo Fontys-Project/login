@@ -2,16 +2,16 @@ from flask import Blueprint, current_app, jsonify
 from flask_restful import Api
 from marshmallow import ValidationError
 from loginapi.extensions import apispec
-from loginapi.api.resources import UserResource, UserList
+from loginapi.api.resources import UserResource, UserList, PermissionResource, PermissionList
 from loginapi.api.schemas import UserSchema
-
 
 blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
 api = Api(blueprint)
 
-
 api.add_resource(UserResource, "/users/<int:user_id>", endpoint="user_by_id")
 api.add_resource(UserList, "/users", endpoint="users")
+api.add_resource(PermissionResource, "/permissions/<int:permission_id>", endpoint="permission_by_id")
+api.add_resource(PermissionList, "/permissions", endpoint="permissions")
 
 
 @blueprint.before_app_first_request
