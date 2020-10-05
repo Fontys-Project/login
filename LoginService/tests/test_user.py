@@ -18,7 +18,6 @@ def test_get_user(client, db, user, admin_headers):
 
     data = rep.get_json()["user"]
     assert data["username"] == user.username
-    assert data["email"] == user.email
     assert data["active"] == user.active
 
 
@@ -40,7 +39,6 @@ def test_put_user(client, db, user, admin_headers):
 
     data = rep.get_json()["user"]
     assert data["username"] == "updated"
-    assert data["email"] == user.email
     assert data["active"] == user.active
 
 
@@ -64,12 +62,11 @@ def test_delete_user(client, db, user, admin_headers):
 def test_create_user(client, db, admin_headers):
     # test bad data
     users_url = url_for('api.users')
-    data = {"username": "created"}
+    data = {"username": "created@mail.com"}
     rep = client.post(users_url, json=data, headers=admin_headers)
     assert rep.status_code == 400
 
     data["password"] = "admin"
-    data["email"] = "create@mail.com"
 
     rep = client.post(users_url, json=data, headers=admin_headers)
     assert rep.status_code == 201
@@ -77,8 +74,7 @@ def test_create_user(client, db, admin_headers):
     data = rep.get_json()
     user = db.session.query(User).filter_by(id=data["user"]["id"]).first()
 
-    assert user.username == "created"
-    assert user.email == "create@mail.com"
+    assert user.username == "created@mail.com"
 
 
 def test_get_all_user(client, db, user_factory, admin_headers):
