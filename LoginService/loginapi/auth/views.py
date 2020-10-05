@@ -10,8 +10,7 @@ from flask_jwt_extended import (
 
 from loginapi.models import User
 from loginapi.extensions import pwd_context, jwt, apispec
-from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
-
+from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database, create_user
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -74,6 +73,26 @@ def login():
 
     ret = {"access_token": access_token, "refresh_token": refresh_token}
     return jsonify(ret), 200
+
+
+@blueprint.route("/register", methods=["POST"])
+def register():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    email = request.json.get("email", None)
+    if not username or not password or not email:
+        return jsonify({"msg": "Missing username, password, or email"}), 400
+
+    user = User.query.filter((User.email == email) | (User.username == username)).first()
+    if user is not None:
+        return jsonify({"msg": "User already exists"}), 400
+
+    # create the actual user
+    create_user(User(username=username, email=email, password=password))
+    return jsonify({"msg": "User created successfully"}), 200
 
 
 @blueprint.route("/refresh", methods=["POST"])

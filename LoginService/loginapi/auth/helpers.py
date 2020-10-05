@@ -9,7 +9,7 @@ from flask_jwt_extended import decode_token
 from sqlalchemy.orm.exc import NoResultFound
 
 from loginapi.extensions import db
-from loginapi.models import TokenBlacklist
+from loginapi.models import TokenBlacklist, User
 
 
 def add_token_to_database(encoded_token, identity_claim):
@@ -63,3 +63,12 @@ def revoke_token(token_jti, user):
         db.session.commit()
     except NoResultFound:
         raise Exception("Could not find the token {}".format(token_jti))
+
+
+def create_user(user):
+    # TODO fire celery task to message broker to say we created a new user
+    #  containing user.email
+    #  not sure if we want the helper to do so, discussion needed probably
+    db.session.add(user)
+    db.session.commit()
+
