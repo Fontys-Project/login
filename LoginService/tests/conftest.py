@@ -36,7 +36,6 @@ def db(app):
 def admin_user(db):
     user = User(
         username='admin',
-        email='admin@admin.com',
         password='admin'
     )
 

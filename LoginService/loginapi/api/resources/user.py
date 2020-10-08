@@ -5,6 +5,7 @@ from loginapi.api.schemas import UserSchema
 from loginapi.models import User
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
+import re
 
 
 class UserResource(Resource):
@@ -142,8 +143,7 @@ class UserList(Resource):
                   user: UserSchema
     """
 
-    method_decorators = [jwt_required]
-
+    @jwt_required
     def get(self):
         schema = UserSchema(many=True)
         query = User.query
@@ -151,7 +151,10 @@ class UserList(Resource):
 
     def post(self):
         schema = UserSchema()
+
         user = schema.load(request.json)
+        if not re.fullmatch('[^@]+@[^@]+\.[^@]+', user.username):
+            return {"msg": "Invalid username (add email address)"}, 400
 
         db.session.add(user)
         db.session.commit()
