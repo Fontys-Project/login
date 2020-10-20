@@ -9,7 +9,7 @@ services:
     env_file:
       - ./.flaskenv
     environment:
-      - DATABASE_URI=sqlite:////db/loginapi.db
+      - DATABASE_URI=mysql://root:root@database/loginapi
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq
       - CELERY_RESULT_BACKEND_URL=redis://redis
     volumes:
@@ -17,6 +17,11 @@ services:
       - ./db/:/db/
     ports:
       - "5000:5000"
+    links:
+      - "mysql:database"
+    depends_on:
+      - redis
+      - mysql
   rabbitmq:
     image: rabbitmq
   redis:

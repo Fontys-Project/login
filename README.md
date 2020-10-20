@@ -20,6 +20,10 @@ loginapi db upgrade
 loginapi init
 ```
 
+## Docker-compose
+This service has docker-compose to run and manage containers. To run all containers, simply run `docker-compose up -d`  
+After all services are up, run `docker-compose exec web loginapi db upgrade` to run every migration to make sure you are up to date.
+
 ## Usage
 
 The service exposes multiple HTTP endpoints which have to be described.
