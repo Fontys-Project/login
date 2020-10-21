@@ -28,6 +28,7 @@ services:
     image: redis
   celery:
     image: loginapi
+    build: .
     command: "celery worker -A loginapi.celery_app:app"
     env_file:
       - ./.flaskenv
