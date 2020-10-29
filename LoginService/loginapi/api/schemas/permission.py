@@ -5,7 +5,7 @@ from loginapi.extensions import ma, db
 class PermissionSchema(ma.SQLAlchemyAutoSchema):
 
     id = ma.Int(dump_only=True)
-    name = ma.Int(dump_only=True)
+    name = ma.String(dump_only=True)
 
     class Meta:
         model = Permission

@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     get_raw_jwt,
 )
 
-from loginapi.models import User
+from loginapi.models import User, Role
 from loginapi.extensions import pwd_context, jwt, apispec
 from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
 from loginapi.api.schemas import UserSchema
