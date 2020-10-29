@@ -24,11 +24,12 @@ def add_token_to_database(encoded_token, identity_claim):
     user_identity = decoded_token[identity_claim]
     expires = datetime.fromtimestamp(decoded_token["exp"])
     revoked = False
+    user_id = user_identity.get('id')
 
     db_token = TokenBlacklist(
         jti=jti,
         token_type=token_type,
-        user_id=user_identity,
+        user_id=user_id,
         expires=expires,
         revoked=revoked,
     )
