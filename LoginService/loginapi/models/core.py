@@ -25,12 +25,12 @@ class Role(db.Model):
     users = db.relationship(
         'User',
         secondary=role_user,
-        backref=db.backref('roles', lazy='dynamic')
+        backref=db.backref('roles', lazy='joined')
     )
     permissions = db.relationship(
         'Permission',
         secondary=role_permission,
-        backref=db.backref('roles', lazy='dynamic')
+        backref=db.backref('roles', lazy='joined')
     )
 
     def __init__(self, **kwargs):
@@ -52,3 +52,6 @@ class Permission(db.Model):
 
     def __repr__(self):
         return "<Permission %s>" % self.name
+
+    def __eq__(self, other):
+        return self.name == other.name

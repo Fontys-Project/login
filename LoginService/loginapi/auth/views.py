@@ -11,7 +11,7 @@ from flask_jwt_extended import (
 from loginapi.models import User, Role
 from loginapi.extensions import pwd_context, jwt, apispec
 from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
-from loginapi.api.schemas import UserSchema
+from loginapi.api.schemas import UserSchema, PermissionSchema
 
 
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
@@ -68,8 +68,13 @@ def login():
     if user is None or not pwd_context.verify(password, user.password):
         return jsonify({"msg": "Bad credentials"}), 400
 
-    schema = UserSchema()
-    user_dump = schema.dump(user)
+    user_schema = UserSchema()
+    permission_schema = PermissionSchema(many=True, only=("name",))
+    permissions = user.get_permissions()
+
+    user_dump = user_schema.dump(user)
+    permission_dump = permission_schema.dump(permissions)
+    user_dump['permissions'] = permission_dump
 
     access_token = create_access_token(identity=user.id, user_claims=user_dump)
     refresh_token = create_refresh_token(identity=user.id, user_claims=user.id)

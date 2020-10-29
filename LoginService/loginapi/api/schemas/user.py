@@ -1,6 +1,7 @@
 from loginapi.models import User
 from loginapi.extensions import ma, db
 from .role import RoleSchema
+from .permission import PermissionSchema
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
