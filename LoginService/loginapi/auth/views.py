@@ -71,8 +71,8 @@ def login():
     schema = UserSchema()
     user_dump = schema.dump(user)
 
-    access_token = create_access_token(identity=user_dump)
-    refresh_token = create_refresh_token(identity=user_dump)
+    access_token = create_access_token(identity=user.id, user_claims=user_dump)
+    refresh_token = create_refresh_token(identity=user.id, user_claims=user.id)
     add_token_to_database(access_token, app.config["JWT_IDENTITY_CLAIM"])
     add_token_to_database(refresh_token, app.config["JWT_IDENTITY_CLAIM"])
 

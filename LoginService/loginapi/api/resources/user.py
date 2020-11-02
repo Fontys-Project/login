@@ -80,22 +80,22 @@ class UserResource(Resource):
 
     method_decorators = [jwt_required]
 
-    def get(self, user_id):
+    def get(self, user):
         schema = UserSchema()
-        user = User.query.get_or_404(user_id)
-        return {"user": schema.dump(user)}
+        _user = User.query.get_or_404(user.id)
+        return {"user": schema.dump(_user)}
 
-    def put(self, user_id):
+    def put(self, user):
         schema = UserSchema(partial=True)
-        user = User.query.get_or_404(user_id)
-        user = schema.load(request.json, instance=user)
+        _user = User.query.get_or_404(user.id)
+        user = schema.load(request.json, instance=_user)
 
         db.session.commit()
 
         return {"msg": "user updated", "user": schema.dump(user)}
 
-    def delete(self, user_id):
-        user = User.query.get_or_404(user_id)
+    def delete(self, user):
+        user = User.query.get_or_404(user.id)
         db.session.delete(user)
         db.session.commit()
 
@@ -153,7 +153,8 @@ class UserList(Resource):
         schema = UserSchema()
 
         user = schema.load(request.json)
-        if not re.fullmatch('[^@]+@[^@]+\.[^@]+', user.username):
+        regex = r'[^@]+@[^@]+\.[^@]+'
+        if not re.fullmatch(regex, user.username):
             return {"msg": "Invalid username (add email address)"}, 400
 
         db.session.add(user)
