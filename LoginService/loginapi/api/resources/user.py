@@ -80,22 +80,22 @@ class UserResource(Resource):
 
     method_decorators = [jwt_required]
 
-    def get(self, user):
+    def get(self, user_id):
         schema = UserSchema()
-        _user = User.query.get_or_404(user.id)
+        _user = User.query.get_or_404(user_id)
         return {"user": schema.dump(_user)}
 
-    def put(self, user):
+    def put(self, user_id):
         schema = UserSchema(partial=True)
-        _user = User.query.get_or_404(user.id)
+        _user = User.query.get_or_404(user_id)
         user = schema.load(request.json, instance=_user)
 
         db.session.commit()
 
         return {"msg": "user updated", "user": schema.dump(user)}
 
-    def delete(self, user):
-        user = User.query.get_or_404(user.id)
+    def delete(self, user_id):
+        user = User.query.get_or_404(user_id)
         db.session.delete(user)
         db.session.commit()
 
