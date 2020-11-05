@@ -26,8 +26,8 @@ def upgrade():
     )
 
     to_insert = [
-        {"username": "hans@wmstest.nl", "password": User(password="WachtwoordHans1").password, "active": True},
-        {"username": "freek@wmstest.nl", "password": User(password="WachtwoordFreek2").password, "active": True}
+        {"username": "admin@wmstest.nl", "password": User(password="WachtwoordAdmin1").password, "active": True},
+        {"username": "gebruiker@wmstest.nl", "password": User(password="WachtwoordGebruiker1").password, "active": True}
     ]
     op.bulk_insert(user_table, to_insert)
 
