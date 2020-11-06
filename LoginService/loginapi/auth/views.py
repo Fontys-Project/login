@@ -13,7 +13,6 @@ from loginapi.extensions import pwd_context, jwt, apispec
 from loginapi.auth.helpers import revoke_token, is_token_revoked, add_token_to_database
 from loginapi.api.schemas import UserSchema, PermissionSchema
 
-
 blueprint = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -69,15 +68,18 @@ def login():
         return jsonify({"msg": "Bad credentials"}), 400
 
     user_schema = UserSchema()
-    permission_schema = PermissionSchema(many=True, only=("name",))
+    permission_schema = PermissionSchema(only=("name",), many=True)
     permissions = user.get_permissions()
 
     user_dump = user_schema.dump(user)
     permission_dump = permission_schema.dump(permissions)
-    user_dump['permissions'] = permission_dump
+    # TODO rework this so we get a list from PermissionSchema using marshmallow .Pluck
+    #  for some reason not working :(
+    _permissions_list = [_permission['name'] for _permission in permission_dump]
+    user_dump['permissions'] = _permissions_list
 
     access_token = create_access_token(identity=user.id, user_claims=user_dump)
-    refresh_token = create_refresh_token(identity=user.id, user_claims=user.id)
+    refresh_token = create_refresh_token(identity=user.id, user_claims=user_dump)
     add_token_to_database(access_token, app.config["JWT_IDENTITY_CLAIM"])
     add_token_to_database(refresh_token, app.config["JWT_IDENTITY_CLAIM"])
 

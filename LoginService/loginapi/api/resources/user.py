@@ -2,7 +2,7 @@ from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from loginapi.api.schemas import UserSchema
-from loginapi.models import User
+from loginapi.models import User, Role
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
 import re
@@ -159,5 +159,10 @@ class UserList(Resource):
 
         db.session.add(user)
         db.session.commit()
+
+        role = db.session.query(Role).filter(Role.name == "Gebruiker").first()
+        if role:
+            user.roles.append(role)
+            db.session.commit()
 
         return {"msg": "user created", "user": schema.dump(user)}, 201

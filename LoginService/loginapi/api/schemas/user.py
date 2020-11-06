@@ -7,7 +7,8 @@ from .permission import PermissionSchema
 class UserSchema(ma.SQLAlchemyAutoSchema):
     id = ma.Int(dump_only=True)
     password = ma.String(load_only=True, required=True)
-    roles = ma.Nested(RoleSchema(only=("name",)), many=True)
+    # roles = ma.Pluck(RoleSchema(only=("name",)), many=True)
+    roles = ma.Pluck('RoleSchema', 'name', many=True)
 
     class Meta:
         model = User
