@@ -80,9 +80,11 @@ def init_celery(app=None):
 def use_rs256(app=None):
     app = app or create_app()
     if app.config['SECRET_KEY'] is None:
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__))
         try:
-            secret_key = open('loginapi/keys/rs256.pem').read()
-            public_key = open('loginapi/keys/rs256.pub').read()
+            secret_key = open(dir_path+'/keys/rs256.pem').read()
+            public_key = open(dir_path+'/keys/rs256.pub').read()
             app.config.update(
                 JWT_ALGORITHM='RS256',
                 JWT_PRIVATE_KEY=secret_key,
