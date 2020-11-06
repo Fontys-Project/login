@@ -80,11 +80,15 @@ def init_celery(app=None):
 def use_rs256(app=None):
     app = app or create_app()
     if app.config['SECRET_KEY'] is None:
-        secret_key = open('keys/rs256.pem').read()
-        public_key = open('keys/rs256.pub').read()
-        app.config.update(
-            JWT_ALGORITHM='RS256',
-            JWT_SECRET_KEY=secret_key,
-            JWT_PUBLIC_KEY=public_key
-        )
+        try:
+            secret_key = open('loginapi/keys/rs256.pem').read()
+            public_key = open('loginapi/keys/rs256.pub').read()
+            app.config.update(
+                JWT_ALGORITHM='RS256',
+                JWT_PRIVATE_KEY=secret_key,
+                JWT_PUBLIC_KEY=public_key
+            )
+        except Exception as e:
+            print("Something went wrong: %s" % str(e))
+
 
