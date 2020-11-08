@@ -25,7 +25,7 @@ def permission_required(keys: list):
             # Checks if the permission is valid
             for key in keys:
                 if not any(perm.name == key for perm in current_user.permissions):
-                    return abort(401)
+                    return abort(403)
             args = (klass,) + args
             return func(*args, **kwargs)
 

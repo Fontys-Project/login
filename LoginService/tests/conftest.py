@@ -2,14 +2,15 @@ import json
 import pytest
 from dotenv import load_dotenv
 
-from loginapi.models import User
+from loginapi.models import User, Role, Permission
 from loginapi.app import create_app
 from loginapi.extensions import db as _db
 from pytest_factoryboy import register
-from tests.factories import UserFactory
-
+from tests.factories import UserFactory, RoleFactory, PermissionFactory
 
 register(UserFactory)
+register(RoleFactory)
+register(PermissionFactory)
 
 
 @pytest.fixture(scope="session")
@@ -33,7 +34,22 @@ def db(app):
 
 
 @pytest.fixture
-def admin_user(db):
+def create_roles(db, user):
+    role_name = "Admin"
+    role = Role(name=role_name, users=[user])
+    db.session.add(role)
+    db.session.commit()
+
+    role_permissions = ["LOGIN_USER_CREATE", "LOGIN_USER_DELETE", "LOGIN_USER_GET", "LOGIN_USER_GET_ALL",
+                        "LOGIN_USER_UPDATE"]
+    for permission in role_permissions:
+        _permission = Permission(name=permission, roles=[role])
+        db.session.add(_permission)
+        db.session.commit()
+
+
+@pytest.fixture
+def admin_user(db, create_roles):
     user = User(
         username='admin',
         password='admin'

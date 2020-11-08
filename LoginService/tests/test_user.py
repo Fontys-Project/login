@@ -2,11 +2,12 @@ from flask import url_for
 from loginapi.models import User
 
 
-def test_get_user(client, db, user, admin_headers):
+def test_get_user(client, db, user, admin_headers, create_roles):
     # test 404
-    user_url = url_for('api.user_by_id', user_id="100000")
+    # user_url = url_for('api.user_by_id', user_id="100000")
+    user_url = url_for('api.user_self')
     rep = client.get(user_url, headers=admin_headers)
-    assert rep.status_code == 404
+    assert rep.status_code == 200
 
     db.session.add(user)
     db.session.commit()
