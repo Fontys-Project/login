@@ -9,6 +9,7 @@ blueprint = Blueprint("api", __name__, url_prefix="/api/v1")
 api = Api(blueprint)
 
 api.add_resource(UserResource, "/users/<int:user_id>", endpoint="user_by_id")
+api.add_resource(UserResource, "/users/self", endpoint="user_self")
 api.add_resource(UserList, "/users", endpoint="users")
 api.add_resource(PermissionResource, "/permissions/<int:permission_id>", endpoint="permission_by_id")
 api.add_resource(PermissionList, "/permissions", endpoint="permissions")

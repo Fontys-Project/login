@@ -5,7 +5,13 @@ from loginapi.api.schemas import UserSchema
 from loginapi.models import User, Role
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
+from loginapi.commons.check_permission import permission_required
 import re
+
+try:
+    from flask import _app_ctx_stack as ctx_stack
+except ImportError:  # pragma: no cover
+    from flask import _request_ctx_stack as ctx_stack
 
 
 class UserResource(Resource):
@@ -80,11 +86,28 @@ class UserResource(Resource):
 
     method_decorators = [jwt_required]
 
-    def get(self, user_id):
+    def get(self, user_id=False):
+        if not user_id:
+            return self.get_self()
+        return self.get_other(user_id)
+        # schema = UserSchema()
+        # _user = User.query.get_or_404(user_id)
+        # return {"user": schema.dump(_user)}
+
+    @staticmethod
+    def get_self():
+        schema = UserSchema()
+        current_user = ctx_stack.top.jwt_user
+        _user = User.query.get_or_404(current_user.id)
+        return {"user": schema.dump(_user)}
+
+    @permission_required(["LOGIN_USER_GET"])
+    def get_other(self, user_id):
         schema = UserSchema()
         _user = User.query.get_or_404(user_id)
         return {"user": schema.dump(_user)}
 
+    @permission_required(["LOGIN_USER_UPDATE"])
     def put(self, user_id):
         schema = UserSchema(partial=True)
         _user = User.query.get_or_404(user_id)
@@ -94,6 +117,7 @@ class UserResource(Resource):
 
         return {"msg": "user updated", "user": schema.dump(user)}
 
+    @permission_required(["LOGIN_USER_DELETE"])
     def delete(self, user_id):
         user = User.query.get_or_404(user_id)
         db.session.delete(user)
@@ -144,6 +168,7 @@ class UserList(Resource):
     """
 
     @jwt_required
+    @permission_required("LOGIN_USER_GET_ALL")
     def get(self):
         schema = UserSchema(many=True)
         query = User.query

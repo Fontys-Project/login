@@ -17,11 +17,11 @@ class User(db.Model):
     def __repr__(self):
         return "<User %s>" % self.username
 
-    def get_permissions(self):
+    @property
+    def permissions(self):
         permissions = []
         for role in self.roles:
             for permission in role.permissions:
                 if permission not in permissions:
                     permissions.append(permission)
         return permissions
-

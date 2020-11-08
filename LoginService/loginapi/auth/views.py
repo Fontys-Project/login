@@ -68,15 +68,7 @@ def login():
         return jsonify({"msg": "Bad credentials"}), 400
 
     user_schema = UserSchema()
-    permission_schema = PermissionSchema(only=("name",), many=True)
-    permissions = user.get_permissions()
-
     user_dump = user_schema.dump(user)
-    permission_dump = permission_schema.dump(permissions)
-    # TODO rework this so we get a list from PermissionSchema using marshmallow .Pluck
-    #  for some reason not working :(
-    _permissions_list = [_permission['name'] for _permission in permission_dump]
-    user_dump['permissions'] = _permissions_list
 
     access_token = create_access_token(identity=user.id, user_claims=user_dump)
     refresh_token = create_refresh_token(identity=user.id, user_claims=user_dump)
