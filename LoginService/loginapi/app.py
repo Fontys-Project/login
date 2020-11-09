@@ -10,6 +10,8 @@ def create_app(testing=False, cli=False):
     app = Flask("loginapi")
     app.config.from_object("loginapi.config")
 
+    use_rs256(app)
+
     if testing is True:
         app.config["TESTING"] = True
 
@@ -73,3 +75,22 @@ def init_celery(app=None):
 
     celery.Task = ContextTask
     return celery
+
+
+def use_rs256(app=None):
+    app = app or create_app()
+    if app.config['SECRET_KEY'] is None:
+        import os
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        try:
+            secret_key = open(dir_path+'/keys/rs256.pem').read()
+            public_key = open(dir_path+'/keys/rs256.pub').read()
+            app.config.update(
+                JWT_ALGORITHM='RS256',
+                JWT_PRIVATE_KEY=secret_key,
+                JWT_PUBLIC_KEY=public_key
+            )
+        except Exception as e:
+            print("Something went wrong: %s" % str(e))
+
+

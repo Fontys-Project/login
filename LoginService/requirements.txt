@@ -14,3 +14,4 @@ tox
 celery[redis]
 gunicorn
 flask-mysqldb
+cryptography
