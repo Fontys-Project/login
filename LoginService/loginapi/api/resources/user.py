@@ -5,13 +5,8 @@ from loginapi.api.schemas import UserSchema
 from loginapi.models import User, Role
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
-from loginapi.commons.check_permission import permission_required
+from loginapi.commons.check_permission import permission_required, get_current_user
 import re
-
-try:
-    from flask import _app_ctx_stack as ctx_stack
-except ImportError:  # pragma: no cover
-    from flask import _request_ctx_stack as ctx_stack
 
 
 class UserResource(Resource):
@@ -97,7 +92,7 @@ class UserResource(Resource):
     @staticmethod
     def get_self():
         schema = UserSchema()
-        current_user = ctx_stack.top.jwt_user
+        current_user = get_current_user()
         _user = User.query.get_or_404(current_user.id)
         return {"user": schema.dump(_user)}
 

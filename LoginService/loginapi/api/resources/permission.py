@@ -5,6 +5,7 @@ from loginapi.api.schemas import PermissionSchema
 from loginapi.models import Permission
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
+from loginapi.commons.check_permission import permission_required
 
 
 class PermissionResource(Resource):
@@ -79,12 +80,14 @@ class PermissionResource(Resource):
 
     # method_decorators = [jwt_required]
 
+    @permission_required(["LOGIN_PERMISSION_READ"])
     def get(self, permission_id):
         schema = PermissionSchema()
         permission = Permission.query.get_or_404(permission_id)
         return {"user": schema.dump(permission)}
 
     @jwt_required
+    @permission_required(["LOGIN_PERMISSION_UPDATE"])
     def put(self, permission_id):
         schema = PermissionSchema(partial=True)
         permission = Permission.query.get_or_404(permission_id)
@@ -95,6 +98,7 @@ class PermissionResource(Resource):
         return {"msg": "permission updated", "permission": schema.dump(permission)}
 
     @jwt_required
+    @permission_required(["LOGIN_PERMISSION_DELETE"])
     def delete(self, permission_id):
         permission = Permission.query.get_or_404(permission_id)
         db.session.delete(permission)
@@ -146,11 +150,13 @@ class PermissionList(Resource):
 
     method_decorators = [jwt_required]
 
+    @permission_required(["LOGIN_PERMISSION_READ"])
     def get(self):
         schema = PermissionSchema(many=True)
         query = Permission.query
         return paginate(query, schema)
 
+    @permission_required(["LOGIN_PERMISSION_CREATE"])
     def post(self):
         schema = PermissionSchema()
         permission = schema.load(request.json)
@@ -159,3 +165,4 @@ class PermissionList(Resource):
         db.session.commit()
 
         return {"msg": "permission created", "permission": schema.dump(permission)}, 201
+

@@ -37,8 +37,12 @@ def db(app):
 def create_roles(db, user):
     role_name = "Admin"
     role = Role(name=role_name, users=[user])
-    db.session.add(role)
-    db.session.commit()
+    try:
+        db.session.add(role)
+        db.session.commit()
+    except e:
+        print("something wrong: %1" % str(e))
+
 
     role_permissions = ["LOGIN_USER_CREATE", "LOGIN_USER_DELETE", "LOGIN_USER_GET", "LOGIN_USER_GET_ALL",
                         "LOGIN_USER_UPDATE"]

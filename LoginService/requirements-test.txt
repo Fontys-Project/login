@@ -4,3 +4,4 @@ pytest-flask
 pytest-factoryboy
 pytest-celery
 factory_boy
+pytest-mock

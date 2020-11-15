@@ -5,6 +5,7 @@ from loginapi.api.schemas import RoleSchema
 from loginapi.models import Role
 from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
+from loginapi.commons.check_permission import permission_required
 
 
 class RoleResource(Resource):
@@ -79,11 +80,13 @@ class RoleResource(Resource):
 
     method_decorators = [jwt_required]
 
+    @permission_required(["LOGIN_ROLE_READ"])
     def get(self, role_id):
         schema = RoleSchema()
         _role = Role.query.get_or_404(role_id)
         return {"role": schema.dump(_role)}
 
+    @permission_required(["LOGIN_ROLE_UPDATE"])
     def put(self, role_id):
         schema = RoleSchema(partial=True)
         _role = Role.query.get_or_404(role_id)
@@ -93,6 +96,7 @@ class RoleResource(Resource):
 
         return {"msg": "role updated", "role": schema.dump(role)}
 
+    @permission_required(["LOGIN_ROLE_DELETE"])
     def delete(self, role_id):
         role = Role.query.get_or_404(role_id)
         db.session.delete(role)
@@ -144,11 +148,13 @@ class RoleList(Resource):
 
     method_decorators = [jwt_required]
 
+    @permission_required(["LOGIN_ROLE_READ"])
     def get(self):
         schema = RoleSchema(many=True)
         query = Role.query
         return paginate(query, schema)
 
+    @permission_required(["LOGIN_ROLE_CREATE"])
     def post(self):
         schema = RoleSchema()
 
