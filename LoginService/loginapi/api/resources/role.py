@@ -16,7 +16,7 @@ class RoleResource(Resource):
         - api
       parameters:
         - in: path
-          name: user_id
+          name: role_id
           schema:
             type: integer
       responses:
@@ -26,22 +26,22 @@ class RoleResource(Resource):
               schema:
                 type: object
                 properties:
-                  user: UserSchema
+                  role: RoleSchema
         404:
-          description: user does not exists
+          description: role does not exist
     put:
       tags:
         - api
       parameters:
         - in: path
-          name: user_id
+          name: role_id
           schema:
             type: integer
       requestBody:
         content:
           application/json:
             schema:
-              UserSchema
+              RoleSchema
       responses:
         200:
           content:
@@ -51,16 +51,16 @@ class RoleResource(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user updated
-                  user: UserSchema
+                    example: role updated
+                  user: RoleSchema
         404:
-          description: user does not exists
+          description: role does not exist
     delete:
       tags:
         - api
       parameters:
         - in: path
-          name: user_id
+          name: role_id
           schema:
             type: integer
       responses:
@@ -72,9 +72,9 @@ class RoleResource(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user deleted
+                    example: role deleted
         404:
-          description: user does not exists
+          description: role does not exist
     """
 
     method_decorators = [jwt_required]
@@ -120,7 +120,7 @@ class RoleList(Resource):
                       results:
                         type: array
                         items:
-                          $ref: '#/components/schemas/UserSchema'
+                          $ref: '#/components/schemas/RoleSchema'
     post:
       tags:
         - api
@@ -128,7 +128,7 @@ class RoleList(Resource):
         content:
           application/json:
             schema:
-              UserSchema
+              RoleSchema
       responses:
         201:
           content:
@@ -138,11 +138,12 @@ class RoleList(Resource):
                 properties:
                   msg:
                     type: string
-                    example: user created
-                  user: UserSchema
+                    example: role created
+                  user: RoleSchema
     """
 
     method_decorators = [jwt_required]
+
     def get(self):
         schema = RoleSchema(many=True)
         query = Role.query
