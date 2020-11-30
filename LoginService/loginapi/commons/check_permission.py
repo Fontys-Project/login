@@ -17,10 +17,10 @@ def permission_required(keys: list):
     """
 
     def real_decorator(func):
-        # https://docs.python.org/2/library/functools.html#functools.wraps
-        # This is a convenience function for invoking update_wrapper() as a function decorator when defining a wrapper function.
-        # Without the use of this decorator factory, the name of the example function would have been 'decorated_view',
-        # and the docstring of the original caller would have been lost.
+        # https://docs.python.org/2/library/functools.html#functools.wraps This is a convenience function for
+        # invoking update_wrapper() as a function decorator when defining a wrapper function. Without the use of this
+        # decorator factory, the name of the example function would have been 'decorated_view', and the docstring of
+        # the original caller would have been lost.
         @wraps(func)
         def decorated_view(klass, *args, **kwargs):
             # Checks if the current user is authenticated
