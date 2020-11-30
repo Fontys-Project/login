@@ -27,8 +27,12 @@ def permission_required(keys: list):
             current_user = get_current_user()
             if not current_user:
                 return abort(404)
+            _keys = keys  # overwriting given argument is always a bad idea
+            # Check if given argument is not a list, cast a list
+            if not isinstance(keys, list):
+                _keys = [keys]
             # Checks if the permission is valid
-            for key in keys:
+            for key in _keys:
                 if not any(perm.name == key for perm in current_user.permissions):
                     return abort(403)
             args = (klass,) + args
