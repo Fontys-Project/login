@@ -7,7 +7,7 @@ from loginapi.extensions import db
 from loginapi.commons.pagination import paginate
 from loginapi.commons.check_permission import permission_required, get_current_user
 import re
-from loginapi.tasks.loginapi import invoke_create_user
+from loginapi.tasks.loginapi import invoke_create_user, delete_user
 
 
 class UserResource(Resource):
@@ -95,6 +95,7 @@ class UserResource(Resource):
         schema = UserSchema()
         current_user = get_current_user()
         _user = User.query.get_or_404(current_user.id)
+        delete_user.delay()
         try:
             invoke_create_user(current_user.username)
         except Exception as e:

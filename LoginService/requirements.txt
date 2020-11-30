@@ -15,3 +15,4 @@ celery[redis]
 gunicorn
 flask-mysqldb
 cryptography
+pyamqp

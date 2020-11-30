@@ -18,6 +18,7 @@ def create_app(testing=False, cli=False):
     configure_extensions(app, cli)
     configure_apispec(app)
     register_blueprints(app)
+
     init_celery(app)
 
     return app
@@ -64,7 +65,12 @@ def init_celery(app=None):
     app = app or create_app()
     celery.conf.broker_url = app.config["CELERY_BROKER_URL"]
     celery.conf.result_backend = app.config["CELERY_RESULT_BACKEND"]
+    celery.conf.task_routes = {
+        'loginapi.tasks.loginapi.create_user': {'queue': 'customer'},
+        'loginapi.tasks.loginapi.delete_user': {'queue': 'celery'}
+    }
     celery.conf.update(app.config)
+
 
     class ContextTask(celery.Task):
         """Make celery tasks work with Flask app context"""

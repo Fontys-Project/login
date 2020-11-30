@@ -11,7 +11,7 @@ services:
     environment:
       - DATABASE_URI=mysql://root:root@database/loginapi
       - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq
-      - CELERY_RESULT_BACKEND_URL=redis://redis
+      - CELERY_RESULT_BACKEND_URL=amqp://guest:guest@rabbitmq
     volumes:
       - ./loginapi:/code/loginapi
       - ./db/:/db/
@@ -23,15 +23,17 @@ services:
       - redis
       - mysql
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:3-management
     ports:
       - 5672:5672
+      - 15672:15672
   redis:
     image: redis
   celery:
     image: loginapi
     build: .
-    command: "celery worker -A loginapi.celery_app:app"
+#    command: "celery worker -A loginapi.celery_app:app"
+    command: "celery -A celery_app worker"
     env_file:
       - ./.flaskenv
     volumes:
