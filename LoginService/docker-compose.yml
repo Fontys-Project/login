@@ -33,7 +33,7 @@ services:
     image: loginapi
     build: .
 #    command: "celery worker -A loginapi.celery_app:app"
-    command: "celery -A celery_app worker"
+    command: "celery -A celery_app worker -l info -n login_worker@%h"
     env_file:
       - ./.flaskenv
     volumes:
