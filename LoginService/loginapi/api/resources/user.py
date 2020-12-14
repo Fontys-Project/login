@@ -191,4 +191,10 @@ class UserList(Resource):
             user.roles.append(role)
             db.session.commit()
 
+        # send msg to queueu for customer service so it can create a profile
+        try:
+            invoke_create_user(current_user.username)
+        except Exception as e:
+            print(str(e))
+
         return {"msg": "user created", "user": schema.dump(user)}, 201
