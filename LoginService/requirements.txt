@@ -11,7 +11,7 @@ passlib
 apispec[yaml]
 apispec-webframeworks
 tox
-celery[redis]
+celery==4.4
 gunicorn
 flask-mysqldb
 cryptography

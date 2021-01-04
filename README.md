@@ -34,6 +34,16 @@ To run the service, use
 loginapi run
 ```
 
+## Run celery in debug mode
+Make sure you have `loginapi run`, db and rabbitmq container running. Celery version must be 4.4.  
+Configure celery like the following:
+```
+Script path: /path/to/venv/bin/celery (or run "$ which celery" to get bin path)
+Parameters: -A celery_app worker -l info -n login_worker@%h
+Environment variables can be default
+Working directory: /path/to/login/LoginService/loginapi
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
